@@ -5,6 +5,8 @@ import com.driver.model.Facility;
 import com.driver.model.Hotel;
 import com.driver.model.User;
 import io.swagger.models.auth.In;
+//import org.slf4j.Logger;
+//import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import javax.swing.*;
@@ -12,7 +14,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-
 @Repository
 public class HotelManagementRepository {
      Map<String, Hotel> hotelMap = new HashMap<>();  // hotelName : Hotel
@@ -20,7 +21,10 @@ public class HotelManagementRepository {
      Map<String, Booking> bookingMap = new HashMap<>(); // bookingId : Booking
     Map<String, Integer> noOfBookings = new HashMap<>(); // aadharNo : NoOfBookings
 
+//    public static Logger logger = LoggerFactory.getLogger(HotelManagementRepository.class);
+
     public String addHotel(Hotel hotel) {
+//        logger.warn(hotel.getHotelName());
         if(hotelMap.containsKey(hotel.getHotelName())) return "FAILURE";
         hotelMap.put(hotel.getHotelName(),hotel);
         return "SUCCESS";
@@ -55,7 +59,8 @@ public class HotelManagementRepository {
     }
 
     public int getBookings(Integer aadharCard) {
-        return noOfBookings.getOrDefault(aadharCard,0);
+
+        return noOfBookings.getOrDefault(String.valueOf(aadharCard),0);
     }
 
     public Hotel updateFacilities(List<Facility> newFacilities, String hotelName) {
@@ -69,6 +74,7 @@ public class HotelManagementRepository {
 
     public int bookARoom(Booking booking) {
         String bookingId = UUID.randomUUID().toString();
+
         booking.setBookingId(bookingId);    // setting booking id
         bookingMap.put(bookingId,booking);
         int currAmount = 0;
