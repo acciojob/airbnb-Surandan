@@ -69,6 +69,7 @@ public class HotelManagementRepository {
 
     public int bookARoom(Booking booking) {
         String bookingId = UUID.randomUUID().toString();
+        booking.setBookingId(bookingId);    // setting booking id
         bookingMap.put(bookingId,booking);
         int currAmount = 0;
         Hotel hotel = hotelMap.get(booking.getHotelName());
@@ -77,6 +78,7 @@ public class HotelManagementRepository {
             currAmount = booking.getNoOfRooms() * hotel.getPricePerNight();
             hotel.setAvailableRooms(hotel.getAvailableRooms()-booking.getNoOfRooms());
         }
+        booking.setAmountToBePaid(currAmount);
         return currAmount;
     }
 }
