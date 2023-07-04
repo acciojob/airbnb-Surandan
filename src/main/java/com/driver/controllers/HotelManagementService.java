@@ -36,7 +36,7 @@ public class HotelManagementService {
     }
 
     public int bookARoom(Booking booking) {
-        String bookingId = UUID.randomUUID().toString();
-        return hotelManagementRepository.bookARoom(bookingId,booking);
+
+        return hotelManagementRepository.bookARoom(booking);
     }
 }

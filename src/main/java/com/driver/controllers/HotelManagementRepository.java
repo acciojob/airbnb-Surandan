@@ -7,9 +7,11 @@ import com.driver.model.User;
 import io.swagger.models.auth.In;
 import org.springframework.stereotype.Repository;
 
+import javax.swing.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 @Repository
 public class HotelManagementRepository {
@@ -65,7 +67,8 @@ public class HotelManagementRepository {
         return  hotelMap.get(hotelName);
     }
 
-    public int bookARoom(String bookingId, Booking booking) {
+    public int bookARoom(Booking booking) {
+        String bookingId = UUID.randomUUID().toString();
         bookingMap.put(bookingId,booking);
         int currAmount = 0;
         Hotel hotel = hotelMap.get(booking.getHotelName());
