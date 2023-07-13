@@ -10,10 +10,8 @@ import io.swagger.models.auth.In;
 import org.springframework.stereotype.Repository;
 
 import javax.swing.*;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
+
 @Repository
 public class HotelManagementRepository {
      Map<String, Hotel> hotelMap = new HashMap<>();  // hotelName : Hotel
@@ -64,7 +62,9 @@ public class HotelManagementRepository {
     }
 
     public Hotel updateFacilities(List<Facility> newFacilities, String hotelName) {
-        List<Facility> currFac = hotelMap.get(hotelName).getFacilities();
+        Hotel hotel = hotelMap.get(hotelName);
+        if(hotel.getFacilities() == null) hotel.setFacilities(new ArrayList<>());
+        List<Facility> currFac = hotel.getFacilities();
         for (Facility facility : newFacilities) {
             if(!currFac.contains(facility)) currFac.add(facility);
         }
