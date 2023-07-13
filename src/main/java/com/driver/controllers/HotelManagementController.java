@@ -5,13 +5,7 @@ import com.driver.model.Facility;
 import com.driver.model.Hotel;
 import com.driver.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -22,7 +16,8 @@ import java.util.UUID;
 @RequestMapping("/hotel")
 public class HotelManagementController {
 
-    HotelManagementService hotelManagementService = new HotelManagementService();
+    @Autowired
+    HotelManagementService hotelManagementService;
 
     @PostMapping("/add-hotel")
     public String addHotel(@RequestBody Hotel hotel){
@@ -61,8 +56,9 @@ public class HotelManagementController {
         //Calculate the total amount paid by the person based on no. of rooms booked and price of the room per night.
         //If there arent enough rooms available in the hotel that we are trying to book return -1 
         //in other case return total amount paid 
-        
+
         return hotelManagementService.bookARoom(booking);
+
     }
     
     @GetMapping("/get-bookings-by-a-person/{aadharCard}")
@@ -72,13 +68,17 @@ public class HotelManagementController {
         return hotelManagementService.getBookings(aadharCard);
     }
 
+//    @PutMapping("/update-facilities")
+//    public Hotel updateFacilities(List<Facility> newFacilities,String hotelName){
+//
+//        //We are having a new facilites that a hotel is planning to bring.
+//        //If the hotel is already having that facility ignore that facility otherwise add that facility in the hotelDb
+//        //return the final updated List of facilities and also update that in your hotelDb
+//        //Note that newFacilities can also have duplicate facilities possible
+//        return hotelManagementService.updateFacilities(newFacilities,hotelName);
+//    }
     @PutMapping("/update-facilities")
-    public Hotel updateFacilities(List<Facility> newFacilities,String hotelName){
-
-        //We are having a new facilites that a hotel is planning to bring.
-        //If the hotel is already having that facility ignore that facility otherwise add that facility in the hotelDb
-        //return the final updated List of facilities and also update that in your hotelDb
-        //Note that newFacilities can also have duplicate facilities possible
+    public Hotel updateFacilities(@RequestBody List<Facility> newFacilities, @RequestParam String hotelName){
         return hotelManagementService.updateFacilities(newFacilities,hotelName);
     }
 

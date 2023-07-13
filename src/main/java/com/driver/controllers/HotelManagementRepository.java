@@ -19,7 +19,7 @@ public class HotelManagementRepository {
      Map<String, Hotel> hotelMap = new HashMap<>();  // hotelName : Hotel
      Map<Integer, User> userMap = new HashMap<>();    // aadharNo :  User
      Map<String, Booking> bookingMap = new HashMap<>(); // bookingId : Booking
-    Map<String, Integer> noOfBookings = new HashMap<>(); // aadharNo : NoOfBookings
+    Map<Integer, Integer> noOfBookings = new HashMap<>(); // aadharNo : NoOfBookings
 
 //    public static Logger logger = LoggerFactory.getLogger(HotelManagementRepository.class);
 
@@ -40,7 +40,7 @@ public class HotelManagementRepository {
         String currHotel = "zzzzz";
 
         for(String str : hotelMap.keySet()) {
-            if(hotelMap.get(str).getFacilities().size() >= currFac) {
+            if(hotelMap.get(str).getFacilities()!=null && hotelMap.get(str).getFacilities().size() >= currFac) {
                 if(hotelMap.get(str).getFacilities().size() == currFac) {
                     if(str.compareTo(currHotel) < 0) {
                         currFac = hotelMap.get(str).getFacilities().size();
@@ -60,7 +60,7 @@ public class HotelManagementRepository {
 
     public int getBookings(Integer aadharCard) {
 
-        return noOfBookings.getOrDefault(String.valueOf(aadharCard),0);
+        return noOfBookings.getOrDefault(aadharCard,0);
     }
 
     public Hotel updateFacilities(List<Facility> newFacilities, String hotelName) {
@@ -73,18 +73,22 @@ public class HotelManagementRepository {
     }
 
     public int bookARoom(Booking booking) {
+
         String bookingId = UUID.randomUUID().toString();
 
         booking.setBookingId(bookingId);    // setting booking id
         bookingMap.put(bookingId,booking);
+
         int currAmount = 0;
         Hotel hotel = hotelMap.get(booking.getHotelName());
+
         if(booking.getNoOfRooms() > hotel.getAvailableRooms()) return -1;
         else {
             currAmount = booking.getNoOfRooms() * hotel.getPricePerNight();
             hotel.setAvailableRooms(hotel.getAvailableRooms()-booking.getNoOfRooms());
         }
         booking.setAmountToBePaid(currAmount);
+        noOfBookings.put(booking.getBookingAadharCard(),noOfBookings.getOrDefault(booking.getBookingAadharCard(),0)+1);
         return currAmount;
     }
 }
